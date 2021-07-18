@@ -1,15 +1,21 @@
 """Setup module installation."""
 
+import os
+
 from setuptools import find_packages, setup  # type: ignore
 
 
 def load_requirements(path: str) -> list:
     with open(path, encoding="utf-8") as file:
-        return [
-            line.replace("==", ">=")
-            for line in file.read().split("\n")
-            if line and not line.startswith(("#", "-"))
-        ]
+        requirements = []
+        for line in file.read().split("\n"):
+            if line.startswith("-r"):
+                dirname = os.path.dirname(path)
+                filename = line.split(maxsplit=1)[1]
+                requirements.extend(load_requirements(os.path.join(dirname, filename)))
+            elif line and not line.startswith("#"):
+                requirements.append(line.replace("==", ">="))
+        return requirements
 
 
 if __name__ == "__main__":
