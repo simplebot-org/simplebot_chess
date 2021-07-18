@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+	 .c{width:30pt;height:30pt;font-size:150%}
+	 .r{border-collapse:collapse;border-color:#000;border-style:solid}
+	 .e{border-width:0 1pt 0 0}
+	 .n{border-width:0 0 1pt 0}
+	 .o{border-width:0 0 0 1pt}
+	 .s{border-width:1pt 0 0 0}
+	 .d{background-color:#d18b47}
+	 .l{background-color:#ffce9e}
+	</style>
+    </head>
+    <body>
+	<div style="display:table;margin:0px auto;padding-top:1em">
+	    <table style="text-align:center;border-spacing:0pt;border-width:0pt" class="r">
+		<tr>
+		    <td></td>
+		    {% for f in 'abcdefgh' %}
+		    <td class="r n">{{ f }}</td>
+		    {% endfor %}
+		</tr>
+		{% for row in board.to_array() %}
+		<tr>
+		    {% set rowloop = loop %}
+		    <td class="r e">{{ '12345678'[7-rowloop.index0] }}</td>
+		    {% for cell in row %}
+		    <td class="c {% if (rowloop.index0+loop.index) % 2 == 0 %}d{% else %}l{% endif %}">{{ pieces[cell] }}</td>
+		    {% endfor %}
+		    <td class="r o">{{ '12345678'[7-rowloop.index0] }}</td>
+		</tr>
+		{% endfor %}
+		<tr>
+		    <td></td>
+		    {% for f in 'abcdefgh' %}
+		    <td class="r s">{{ f }}</td>
+		    {% endfor %}
+		</tr>
+	    </table>
+	</div>
+    </body>
+</html>
