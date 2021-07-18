@@ -3,7 +3,7 @@ import os
 import simplebot  # type: ignore
 from deltachat import Chat, Message  # type: ignore
 from jinja2 import Environment, PackageLoader, select_autoescape
-from pkg_resources import DistributionNotFound, get_distribution
+from pkg_resources import DistributionNotFound, get_distribution  # type: ignore
 from simplebot import DeltaBot
 from simplebot.bot import Replies  # type: ignore
 
