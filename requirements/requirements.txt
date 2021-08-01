@@ -1,4 +1,4 @@
 simplebot==2.0.0
 SQLAlchemy==1.4.21
 python-chess==1.999
-Jinja2==2.11.2
+Jinja2==3.0.1
