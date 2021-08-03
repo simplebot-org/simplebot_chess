@@ -91,8 +91,9 @@ def filter_messages(bot: DeltaBot, message: Message, replies: Replies) -> None:
 
 def chess_play(bot: DeltaBot, payload: str, message: Message, replies: Replies) -> None:
     if not payload or "@" not in payload:
+        prefix = _get_prefix(bot)
         replies.add(
-            text="❌ Invalid address. Example:\n/chess_play friend@example.com",
+            text=f"❌ Invalid address. Example:\n/{prefix}play friend@example.com",
             quote=message,
         )
         return
@@ -133,7 +134,7 @@ def chess_play(bot: DeltaBot, payload: str, message: Message, replies: Replies) 
             replies.add(text=text, chat=bot.get_chat(game.chat_id))
 
 
-def chess_surrender(message: Message, replies: Replies) -> None:
+def chess_surrender(bot: DeltaBot, message: Message, replies: Replies) -> None:
     """End the Chess game in the group it is sent."""
     sender = message.get_sender_contact()
     with session_scope() as session:
@@ -144,8 +145,9 @@ def chess_surrender(message: Message, replies: Replies) -> None:
             replies.add(text="❌ There is no active game", quote=message)
         else:
             game.board = None
+            prefix = _get_prefix(bot)
             replies.add(
-                text=f"🏳️ Game Over.\n{sender.name} surrenders.\n\n▶️ Play again? /chess_new"
+                text=f"🏳️ Game Over.\n{sender.name} surrenders.\n\n▶️ Play again? /{prefix}new"
             )
 
 
