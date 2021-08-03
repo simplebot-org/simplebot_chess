@@ -24,6 +24,24 @@ template = Environment(
 
 
 @simplebot.hookimpl
+def deltabot_init(bot: DeltaBot) -> None:
+    prefix = _get_prefix(bot)
+
+    name = f"/{prefix}play"
+    desc = (
+        f"Invite a friend to play Chess.\nExample:\n{name} friend@example.com\n\n"
+        "To move use Standard Algebraic Notation or Long Algebraic Notation (without hyphens),"
+        " more info in Wikipedia. For example, to move pawn from e2 to e4, send a message: e4"
+        " or: e2e4, to move knight from g1 to f3, send a message: Nf3 or: g1f3"
+    )
+    bot.commands.register(func=chess_play, name=name, help=desc)
+
+    bot.commands.register(func=chess_surrender, name=f"/{prefix}surrender")
+    bot.commands.register(func=chess_new, name=f"/{prefix}new")
+    bot.commands.register(func=chess_repeat, name=f"/{prefix}repeat")
+
+
+@simplebot.hookimpl
 def deltabot_start(bot: DeltaBot) -> None:
     path = os.path.join(os.path.dirname(bot.account.db_path), __name__)
     if not os.path.exists(path):
@@ -71,16 +89,7 @@ def filter_messages(bot: DeltaBot, message: Message, replies: Replies) -> None:
                 replies.add(text="❌ Invalid move!", quote=message)
 
 
-@simplebot.command
 def chess_play(bot: DeltaBot, payload: str, message: Message, replies: Replies) -> None:
-    """Invite a friend to play Chess.
-
-    Example: /chess_play friend@example.com
-    To move use Standard Algebraic Notation or Long Algebraic Notation
-    (without hyphens), more info in Wikipedia.
-    For example, to move pawn from e2 to e4, send a message: e4 or: e2e4,
-    to move knight from g1 to f3, send a message: Nf3 or: g1f3
-    """
     if not payload or "@" not in payload:
         replies.add(
             text="❌ Invalid address. Example:\n/chess_play friend@example.com",
@@ -124,7 +133,6 @@ def chess_play(bot: DeltaBot, payload: str, message: Message, replies: Replies) 
             replies.add(text=text, chat=bot.get_chat(game.chat_id))
 
 
-@simplebot.command
 def chess_surrender(message: Message, replies: Replies) -> None:
     """End the Chess game in the group it is sent."""
     sender = message.get_sender_contact()
@@ -141,7 +149,6 @@ def chess_surrender(message: Message, replies: Replies) -> None:
             )
 
 
-@simplebot.command
 def chess_new(bot: DeltaBot, message: Message, replies: Replies) -> None:
     """Start a new Chess game in the current game group."""
     sender = message.get_sender_contact()
@@ -160,7 +167,6 @@ def chess_new(bot: DeltaBot, message: Message, replies: Replies) -> None:
             replies.add(text=text + text2, html=html)
 
 
-@simplebot.command
 def chess_repeat(bot: DeltaBot, message: Message, replies: Replies) -> None:
     """Send game board again."""
     with session_scope() as session:
@@ -193,5 +199,9 @@ def _run_turn(bot: DeltaBot, game: Game) -> tuple:
             else:
                 winner = "{} {}".format(pieces["k"], bot.get_contact(board.black).name)
             text = "🏆 Game over.\n{} Wins!".format(winner)
-        text += "\n\n▶️ Play again? /chess_new"
+        text += f"\n\n▶️ Play again? /{_get_prefix(bot)}new"
     return text, template.render(board=board, pieces=pieces)
+
+
+def _get_prefix(bot: DeltaBot) -> str:
+    return bot.get("command_prefix", scope=__name__) or ""
