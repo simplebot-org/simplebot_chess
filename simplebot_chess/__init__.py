@@ -6,8 +6,7 @@ import simplebot
 from deltachat import Chat, Message
 from jinja2 import Environment, PackageLoader, select_autoescape
 from pkg_resources import DistributionNotFound, get_distribution
-from simplebot import DeltaBot
-from simplebot.bot import Replies
+from simplebot.bot import DeltaBot, Replies
 
 from .game import Board, pieces
 from .orm import Game, init, session_scope

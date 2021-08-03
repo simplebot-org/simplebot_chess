@@ -8,9 +8,7 @@ class TestPlugin:
         assert "❌" in msg.text
 
         # error: can't play against bot
-        msg = mocker.get_one_reply(
-            f"/play {mocker.bot.self_contact.addr}", addr=sender
-        )
+        msg = mocker.get_one_reply(f"/play {mocker.bot.self_contact.addr}", addr=sender)
         assert "❌" in msg.text
 
         # error: can't play against yourself
