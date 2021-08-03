@@ -2,7 +2,7 @@
 
 import os
 
-from setuptools import find_packages, setup  # type: ignore
+from setuptools import find_packages, setup
 
 
 def load_requirements(path: str) -> list:
@@ -21,7 +21,7 @@ def load_requirements(path: str) -> list:
 if __name__ == "__main__":
     MODULE_NAME = "simplebot_chess"
     DESC = "Chess game for Delta Chat (SimpleBot plugin)"
-    URL = "https://github.com/simplebot-org/" + MODULE_NAME
+    KEYWORDS = "simplebot plugin deltachat game chess"
 
     with open("README.rst") as fh:
         long_description = fh.read()
@@ -40,8 +40,8 @@ if __name__ == "__main__":
         long_description_content_type="text/x-rst",
         author="The SimpleBot Contributors",
         author_email="adbenitez@nauta.cu",
-        url=URL,
-        keywords="simplebot plugin deltachat game chess",
+        url=f"https://github.com/simplebot-org/{MODULE_NAME}",
+        keywords=KEYWORDS,
         license="MPL",
         classifiers=[
             "Development Status :: 4 - Beta",
