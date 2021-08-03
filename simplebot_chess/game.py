@@ -1,3 +1,5 @@
+"""Game board."""
+
 from io import StringIO
 
 import chess
@@ -21,6 +23,8 @@ pieces = {
 
 
 class Board:
+    """Class representing a chess board."""
+
     def __init__(self, game: str = None, p1: str = None, p2: str = None) -> None:
         if game:
             self.game = chess.pgn.read_game(StringIO(game))

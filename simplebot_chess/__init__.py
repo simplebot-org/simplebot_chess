@@ -1,11 +1,13 @@
+"""hooks, commands and filters definition."""
+
 import os
 
-import simplebot  # type: ignore
-from deltachat import Chat, Message  # type: ignore
+import simplebot
+from deltachat import Chat, Message
 from jinja2 import Environment, PackageLoader, select_autoescape
-from pkg_resources import DistributionNotFound, get_distribution  # type: ignore
+from pkg_resources import DistributionNotFound, get_distribution
 from simplebot import DeltaBot
-from simplebot.bot import Replies  # type: ignore
+from simplebot.bot import Replies
 
 from .game import Board, pieces
 from .orm import Game, init, session_scope
@@ -112,7 +114,9 @@ def chess_play(bot: DeltaBot, payload: str, message: Message, replies: Replies) 
             )
             session.add(game)  # noqa
 
-            text = f"Hello {receiver.name},\nYou have been invited by {sender.name} to play Chess.\n\n{pieces['K']}: {sender.name}\n{pieces['k']}: {receiver.name}\n\n"
+            text = f"Hello {receiver.name},\n"
+            text += f"You have been invited by {sender.name} to play Chess.\n\n"
+            text += f"{pieces['K']}: {sender.name}\n{pieces['k']}: {receiver.name}\n\n"
             text2, html = _run_turn(bot, game)
             replies.add(text=text + text2, html=html, chat=chat)
         else:
