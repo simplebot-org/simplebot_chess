@@ -27,12 +27,7 @@ def deltabot_init(bot: DeltaBot) -> None:
     prefix = _get_prefix(bot)
 
     name = f"/{prefix}play"
-    desc = (
-        f"Invite a friend to play Chess.\nExample:\n{name} friend@example.com\n\n"
-        "To move use Standard Algebraic Notation or Long Algebraic Notation (without hyphens),"
-        " more info in Wikipedia. For example, to move pawn from e2 to e4, send a message: e4"
-        " or: e2e4, to move knight from g1 to f3, send a message: Nf3 or: g1f3"
-    )
+    desc = f"Invite a friend to play Chess.\nExample:\n{name} friend@example.com"
     bot.commands.register(func=chess_play, name=name, help=desc)
 
     bot.commands.register(func=chess_surrender, name=f"/{prefix}surrender")
@@ -66,7 +61,20 @@ def deltabot_member_removed(bot: DeltaBot, chat: Chat) -> None:
 
 @simplebot.filter
 def filter_messages(bot: DeltaBot, message: Message, replies: Replies) -> None:
-    """Process move coordinates in Chess game groups."""
+    """To move chess pieces you must send messages in the corresponding game group.
+
+    The message with the move must be in Standard Algebraic Notation or Long Algebraic Notation (without hyphens)
+    More info about this notations can be found in Wikipedia.
+    For example:
+    To move pawn from e2 to e4, send a message:
+    e4
+    or in Long Algebraic Notation:
+    e2e4
+    To move knight from g1 to f3, send a message:
+    Nf3
+    or in Long Algebraic Notation:
+    g1f3
+    """
     if not message.text.replace("-", "").isalnum() or len(message.text) < 2:
         return
 
