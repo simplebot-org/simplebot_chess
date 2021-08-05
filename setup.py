@@ -6,6 +6,7 @@ from setuptools import find_packages, setup
 
 
 def load_requirements(path: str) -> list:
+    """Load requirements from the given relative path."""
     with open(path, encoding="utf-8") as file:
         requirements = []
         for line in file.read().split("\n"):
