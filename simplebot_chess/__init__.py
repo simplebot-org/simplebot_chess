@@ -131,11 +131,13 @@ def chess_play(bot: DeltaBot, payload: str, message: Message, replies: Replies) 
             )
             session.add(game)  # noqa
 
-            text = f"Hello {receiver.name},\n"
-            text += f"You have been invited by {sender.name} to play Chess.\n\n"
-            text += f"{pieces['K']}: {sender.name}\n{pieces['k']}: {receiver.name}\n\n"
-            text2, html = _run_turn(bot, game)
-            replies.add(text=text + text2, html=html, chat=chat)
+            text, html = _run_turn(bot, game)
+            text = (
+                f"Hello {receiver.name},\n"
+                f"You have been invited by {sender.name} to play Chess.\n\n"
+                f"{pieces['K']}: {sender.name}\n{pieces['k']}: {receiver.name}\n\n{text}"
+            )
+            replies.add(text=text, html=html, chat=chat)
         else:
             text = f"❌ You already have a game group with {payload}"
             replies.add(text=text, chat=bot.get_chat(game.chat_id))
