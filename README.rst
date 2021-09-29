@@ -24,7 +24,7 @@ To move use `Standard Algebraic Notation <https://en.wikipedia.org/wiki/Algebrai
 
 If this plugin has collisions with commands from other plugins in your bot, you can set a command prefix like ``/chess_`` for all commands::
 
-  simplebot -a bot@example.com db simplebot_chess/command_prefix chess_
+  simplebot -a bot@example.com db -s simplebot_chess/command_prefix chess_
 
 Install
 -------
