@@ -196,20 +196,17 @@ def _run_turn(bot: DeltaBot, game: Game) -> tuple:
     board = Board(game.board)
     result = board.result()
     if result == "*":
-        text = "{} {} it's your turn...".format(
-            pieces["K"] if board.turn == board.white else pieces["k"],
-            bot.get_contact(board.turn).name,
-        )
+        text = f"{pieces['K'] if board.turn == board.white else pieces['k']} {bot.get_contact(board.turn).name} it's your turn..."
     else:
         game.board = None
         if result == "1/2-1/2":
             text = "🤝 Game over.\nIt is a draw!"
         else:
             if result == "1-0":
-                winner = "{} {}".format(pieces["K"], bot.get_contact(board.white).name)
+                winner = f"{pieces['K']} {bot.get_contact(board.white).name}"
             else:
-                winner = "{} {}".format(pieces["k"], bot.get_contact(board.black).name)
-            text = "🏆 Game over.\n{} Wins!".format(winner)
+                winner = f"{pieces['k']} {bot.get_contact(board.black).name}"
+            text = f"🏆 Game over.\n{winner} Wins!"
         text += f"\n\n▶️ Play again? /{_get_prefix(bot)}new"
     return text, template.render(board=board, pieces=pieces)
 
