@@ -121,7 +121,8 @@ def chess_play(bot: DeltaBot, payload: str, message: Message, replies: Replies) 
         if game is None:  # first time playing with this contact
             board = Board(p1=sender.addr, p2=receiver.addr)
             chat = bot.create_group(
-                f"♟️ {sender.addr.split('@')[0]} 🆚 {receiver.addr.split('@')[0]}", [sender, receiver]
+                f"♟️ {sender.addr.split('@')[0]} 🆚 {receiver.addr.split('@')[0]}",
+                [sender, receiver],
             )
             game = Game(
                 p1=p1,
